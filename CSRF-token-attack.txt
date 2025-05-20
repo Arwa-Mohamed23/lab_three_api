@@ -1,0 +1,64 @@
+1. Understand When CSRF Is a Concern
+
+CSRF is mainly a risk in:
+- Session-based authentication (e.g., cookies storing session IDs).
+- APIs that share the same origin (or are accessible from the same browser session as an authenticated user).
+
+CSRF is not a concern if you're using:
+- Token-based authentication like JWT or OAuth with `Authorization` headers, and not relying on cookies.
+
+2. If Using Session-Based Authentication (Cookies)
+
+Rails protects from CSRF by default using a CSRF token stored in a meta tag or header. Here’s how to handle it:
+
+- Rails includes a CSRF token in views automatically.
+- For APIs, you need to manually expose and verify this token: 
+
+a. Enable CSRF Protection in the Controller
+
+If you're using the `ActionController::API` class, CSRF protection is not enabled by default. Use:
+
+class ApplicationController < ActionController::Base
+  protect_from_forgery with: :exception
+end
+
+Or, if using `ActionController::API`, manually include:
+
+class ApplicationController < ActionController::API
+  include ActionController::RequestForgeryProtection
+  protect_from_forgery with: :exception
+end
+
+b. Expose the CSRF Token
+
+Send it to the frontend via headers:
+
+class ApplicationController < ActionController::Base
+  after_action :set_csrf_cookie
+
+  private
+
+  def set_csrf_cookie
+    cookies['CSRF-TOKEN'] = form_authenticity_token if protect_against_forgery?
+  end
+end
+
+c. Frontend (e.g., React, Angular, etc.)
+
+Send the token back with every modifying request.
+
+d. Ensure the Header is Accepted by Rails
+
+Rails looks for the `X-CSRF-Token` header in requests and validates it automatically.
+
+3. If You're Using Token-Based Authentication (JWT/OAuth)
+
+In this case, CSRF is not typically a concern because:
+- No session cookies are involved.
+- Authentication happens via Authorization headers, which cannot be sent by a malicious site due to browser CORS policies.
+
+Thus, you can safely disable CSRF protection for API-only apps using tokens:
+
+class ApplicationController < ActionController::API
+  protect_from_forgery with: :null_session
+end
