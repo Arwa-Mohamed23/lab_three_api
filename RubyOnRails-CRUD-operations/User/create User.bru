@@ -1,0 +1,20 @@
+meta {
+  name: create User
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://127.0.0.1:3000/users
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "user": {
+      "name": "aya",
+      "email": "aya@gmail.com"
+    }
+  }
+}

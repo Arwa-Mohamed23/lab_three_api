@@ -1,0 +1,19 @@
+meta {
+  name: Update a user
+  type: http
+  seq: 4
+}
+
+patch {
+  url: http://localhost:3000/users/1
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "user": {
+      "name": "Arwa Mohammed"
+    }
+  }
+}

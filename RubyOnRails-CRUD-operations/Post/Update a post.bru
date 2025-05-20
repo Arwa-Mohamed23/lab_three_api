@@ -1,0 +1,19 @@
+meta {
+  name: Update a post
+  type: http
+  seq: 4
+}
+
+patch {
+  url: http://localhost:3000/posts/1
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "post": {
+      "content": "This post updated."
+    }
+  }
+}

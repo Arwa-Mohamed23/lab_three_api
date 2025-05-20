@@ -1,0 +1,21 @@
+meta {
+  name: Create a post
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/posts
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "post": {
+      "title": "First Post",
+      "content": "This is my first post!",
+      "user_id": 1
+    }
+  }
+}

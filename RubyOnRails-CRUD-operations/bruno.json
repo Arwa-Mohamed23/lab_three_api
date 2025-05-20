@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "APIs-CRUD-operations",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
